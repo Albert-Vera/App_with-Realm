@@ -94,7 +94,6 @@ public class Empleat_List_Fragment extends MyFragment {
                 public void onClick(View v) {
                     appViewModel.idSeleccion.postValue(getData().get(position).getId());
                     appViewModel.modificar.setValue(true);
-                    System.out.println("aquii mas lejos -..........................................................  " + appViewModel.modificar.getValue().toString());
                     navController.navigate(R.id.insertarFragment);
                 }
             });

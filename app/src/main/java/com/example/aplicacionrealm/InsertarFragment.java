@@ -115,37 +115,19 @@ public class InsertarFragment extends MyFragment {
         if (modificar ) id = idSelecion;
         else id = Integer.parseInt(idEditText.getText().toString());
 
-        // el -1 significa que no se desea buscar por ese campo
-        appViewModel.insertarEmpleat.setValue(new Empleat(
-                id  ,
-                cognomsEditText.getText().toString(),
-                categoriaEditText.getText().toString(),
-                nomEditText.getText().toString(),
-                edadEditText.getText().toString().isEmpty() ? -1 : Integer.parseInt(edadEditText.getText().toString()),
-                antiguetatEditText.getText().toString().isEmpty() ? -1 : Integer.parseInt(antiguetatEditText.getText().toString())));
+        empleat = new Empleat();
+        if (modificar ) empleat.setId(idSelecion);
+        else empleat.setId(Integer.parseInt(idEditText.getText().toString()));
+        empleat.setNom(nomEditText.getText().toString());
+        empleat.setCognoms(cognomsEditText.getText().toString());
+        empleat.setCategoria(categoriaEditText.getText().toString());
+        empleat.setEdad(Integer.parseInt(edadEditText.getText().toString()));
+        empleat.setAntiguetat(Integer.parseInt(antiguetatEditText.getText().toString()));
 
-        appViewModel.writerEmpleat.observe(getViewLifecycleOwner(), new Observer<RealmResults<Empleat>>() {
-            @Override
-            public void onChanged(RealmResults<Empleat> empleats) {
-                realm.beginTransaction();
-                realm.copyToRealmOrUpdate(empleats);
-                realm.commitTransaction();
-            }
-        });
-
-//        empleat = new Empleat();
-//        if (modificar ) empleat.setId(idSelecion);
-//        else empleat.setId(Integer.parseInt(idEditText.getText().toString()));
-//        empleat.setNom(nomEditText.getText().toString());
-//        empleat.setCognoms(cognomsEditText.getText().toString());
-//        empleat.setCategoria(categoriaEditText.getText().toString());
-//        empleat.setEdad(Integer.parseInt(edadEditText.getText().toString()));
-//        empleat.setAntiguetat(Integer.parseInt(antiguetatEditText.getText().toString()));
-//
-//        realm.beginTransaction();
-//        ;
-//        Empleat registrarEmpleat = realm.copyToRealmOrUpdate(empleat);
-//        realm.commitTransaction();
+        realm.beginTransaction();
+        ;
+        Empleat registrarEmpleat = realm.copyToRealmOrUpdate(empleat);
+        realm.commitTransaction();
     }
 
     private boolean validateForm(boolean modificar) {

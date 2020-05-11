@@ -22,21 +22,7 @@ public class AppViewModel extends AndroidViewModel {
     public MutableLiveData<Boolean> modificar = new MutableLiveData<>(false);
     public MutableLiveData<Integer> idSeleccion = new MutableLiveData<>();
     public MutableLiveData<Empleat> empleatABuscar = new MutableLiveData<>();
-    public MutableLiveData<Empleat> insertarEmpleat = new MutableLiveData<>();
-    public LiveData<RealmResults<Empleat>> writerEmpleat = Transformations.switchMap( insertarEmpleat,  new Function<Empleat, LiveData<RealmResults<Empleat>>>() {
-        @Override
-        public LiveData<RealmResults<Empleat>> apply(Empleat empleat) {
-            RealmQuery<Empleat> empleatRealmQuery = Realm.getDefaultInstance().where(Empleat.class);
 
-            empleatRealmQuery.equalTo("id", empleat.getId());
-            empleatRealmQuery.equalTo("nom", empleat.getNom());
-            empleatRealmQuery.equalTo("cognoms", empleat.getCognoms());
-            empleatRealmQuery.equalTo("categoria", empleat.getCategoria());
-            empleatRealmQuery.equalTo("edad", empleat.getEdad());
-            empleatRealmQuery.equalTo("antiguetat", empleat.getAntiguetat());
-            return new MutableLiveData<>(empleatRealmQuery.findAll());
-        }
-    });
     public LiveData<RealmResults<Empleat>> cercarEmpleats = Transformations.switchMap(empleatABuscar, new Function<Empleat, LiveData<RealmResults<Empleat>>>() {
         @Override
         public LiveData<RealmResults<Empleat>> apply(Empleat empleat) {
