@@ -69,8 +69,8 @@ public class Empleat_List_Fragment extends MyFragment {
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
             holder.id.setText(String.valueOf(getData().get(position).getId()));
-            holder.nom.setText(getData().get(position).getNom());
-            holder.cognoms.setText(getData().get(position).getCognoms());
+            holder.nom.setText(getData().get(position).getNomIcognoms());
+            //holder.cognoms.setText(getData().get(position).getCognoms());
             holder.categoria.setText(getData().get(position).getCategoria());
             holder.edad.setText(String.valueOf(getData().get(position).getEdad()));
             holder.antiguetat.setText(String.valueOf(getData().get(position).getAntiguetat()));
@@ -107,7 +107,7 @@ public class Empleat_List_Fragment extends MyFragment {
                 super(view);
                 id = view.findViewById(R.id.textid);
                 nom = view.findViewById(R.id.textnom);
-                cognoms = view.findViewById(R.id.textcognoms);
+                //cognoms = view.findViewById(R.id.textcognoms);
                 categoria = view.findViewById(R.id.textcategoria);
                 edad = view.findViewById(R.id.textedad);
                 antiguetat = view.findViewById(R.id.textantiguetat);

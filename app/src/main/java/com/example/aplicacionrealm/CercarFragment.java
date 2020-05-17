@@ -47,7 +47,7 @@ public class CercarFragment extends MyFragment {
 
         id = view.findViewById(R.id.idCerca);
         nom = view.findViewById(R.id.nomCerca);
-        cognoms = view.findViewById(R.id.cognomsCerca);
+        //cognoms = view.findViewById(R.id.cognomsCerca);
         categoria = view.findViewById(R.id.categoriaCerca);
         edad = view.findViewById(R.id.edadCerca);
         antiguetat = view.findViewById(R.id.antiguetatCerca);
@@ -67,11 +67,11 @@ public class CercarFragment extends MyFragment {
                 // el -1 significa que no se desea buscar por ese campo
                 appViewModel.empleatABuscar.setValue(new Empleat(
                         id.getText().toString().isEmpty() ? -1 : Integer.parseInt(id.getText().toString()),
-                        cognoms.getText().toString(),
                         categoria.getText().toString(),
-                        nom.getText().toString(),
+
                         edad.getText().toString().isEmpty() ? -1 : Integer.parseInt(edad.getText().toString()),
-                        antiguetat.getText().toString().isEmpty() ? -1 : Integer.parseInt(antiguetat.getText().toString())));
+                        antiguetat.getText().toString().isEmpty() ? -1 : Integer.parseInt(antiguetat.getText().toString()),
+                        nom.getText().toString()));
 
                 navController.navigate(R.id.listBusquedaFragment);
             }

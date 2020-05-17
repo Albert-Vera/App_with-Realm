@@ -50,7 +50,7 @@ public class InsertarFragment extends MyFragment {
         titol = view.findViewById(R.id.titleText);
         idEditText = view.findViewById(R.id.idEditText);
         nomEditText = view.findViewById(R.id.nomEditText);
-        cognomsEditText = view.findViewById(R.id.cognomsEditText);
+       // cognomsEditText = view.findViewById(R.id.cognomsEditText);
         categoriaEditText = view.findViewById(R.id.categoriaEditText);
         edadEditText = view.findViewById(R.id.edadEditText);
         antiguetatEditText = view.findViewById(R.id.antiguetatEditText);
@@ -118,8 +118,8 @@ public class InsertarFragment extends MyFragment {
         empleat = new Empleat();
         if (modificar ) empleat.setId(idSelecion);
         else empleat.setId(Integer.parseInt(idEditText.getText().toString()));
-        empleat.setNom(nomEditText.getText().toString());
-        empleat.setCognoms(cognomsEditText.getText().toString());
+        empleat.setNomIcognoms(nomEditText.getText().toString());
+       // empleat.setCognoms(cognomsEditText.getText().toString());
         empleat.setCategoria(categoriaEditText.getText().toString());
         empleat.setEdad(Integer.parseInt(edadEditText.getText().toString()));
         empleat.setAntiguetat(Integer.parseInt(antiguetatEditText.getText().toString()));

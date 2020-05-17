@@ -13,10 +13,15 @@ public class MyApplication extends Application {
 
         Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
-                .name("bbdd_Primera.realm")
-                .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
+                .name("realAlbert.realm")
+                .schemaVersion(3)
+                .migration(new MyMigration())
                 .build();
         Realm.setDefaultConfiguration(config);
     }
 }
+
+
+
+// .migration(new MyMigration())
+//            .deleteRealmIfMigrationNeeded()

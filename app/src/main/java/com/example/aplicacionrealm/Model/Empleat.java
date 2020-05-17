@@ -3,6 +3,7 @@ package com.example.aplicacionrealm.Model;
 import io.realm.RealmObject;
 import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 public class Empleat extends RealmObject {
 
@@ -10,19 +11,20 @@ public class Empleat extends RealmObject {
     @PrimaryKey
     private int id;
     @Index
-    private String cognoms, categoria, nom;
+    private String categoria;
     private int edad, antiguetat;
+    @Required
+    private String nomIcognoms;
 
     public Empleat() {
     }
 
-    public Empleat(int id, String cognoms, String categoria, String nom, int edad, int antiguetat) {
+    public Empleat(int id, String categoria, int edad, int antiguetat, String nomIcognoms) {
         this.id = id;
-        this.cognoms = cognoms;
         this.categoria = categoria;
-        this.nom = nom;
         this.edad = edad;
         this.antiguetat = antiguetat;
+        this.nomIcognoms = nomIcognoms;
     }
 
     public String getCountString() {
@@ -37,12 +39,12 @@ public class Empleat extends RealmObject {
         this.id = id;
     }
 
-    public String getCognoms() {
-        return cognoms;
+    public String getNomIcognoms() {
+        return nomIcognoms;
     }
 
-    public void setCognoms(String cognoms) {
-        this.cognoms = cognoms;
+    public void setNomIcognoms(String nomIcognoms) {
+        this.nomIcognoms = nomIcognoms;
     }
 
     public String getCategoria() {
@@ -51,14 +53,6 @@ public class Empleat extends RealmObject {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
     }
 
     public int getEdad() {

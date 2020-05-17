@@ -32,11 +32,8 @@ public class AppViewModel extends AndroidViewModel {
             if(empleat.getId() != -1)
                 empleatRealmQuery.equalTo("id", empleat.getId());
 
-            if(!empleat.getNom().isEmpty())
-                empleatRealmQuery.equalTo("nom", empleat.getNom());
-
-            if(!empleat.getCognoms().isEmpty())
-                empleatRealmQuery.equalTo("cognoms", empleat.getCognoms());
+            if(!empleat.getNomIcognoms().isEmpty())
+                empleatRealmQuery.equalTo("nom", empleat.getNomIcognoms());
 
             if(!empleat.getCategoria().isEmpty())
                 empleatRealmQuery.equalTo("categoria", empleat.getCategoria());

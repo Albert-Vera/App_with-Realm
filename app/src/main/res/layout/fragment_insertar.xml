@@ -43,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
         android:background="@color/White"
-        android:hint="Nom"
+        android:hint="Nom i cognoms"
         android:padding="5dp"
         android:textColor="@color/Negre"
         android:textColorHint="@color/colorHint"
@@ -53,22 +53,22 @@
 
     </EditText>
 
-    <EditText
-        android:id="@+id/cognomsEditText"
-        android:layout_width="290dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/White"
-        android:hint="cognoms"
-        android:padding="5dp"
-        android:textColor="@color/Negre"
-        android:textColorHint="@color/colorHint"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nomEditText">
+<!--    <EditText-->
+<!--        android:id="@+id/cognomsEditText"-->
+<!--        android:layout_width="290dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:background="@color/White"-->
+<!--        android:hint="cognoms"-->
+<!--        android:padding="5dp"-->
+<!--        android:textColor="@color/Negre"-->
+<!--        android:textColorHint="@color/colorHint"-->
+<!--        android:textSize="18sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/nomEditText">-->
 
-    </EditText>
+<!--    </EditText>-->
 
     <EditText
         android:id="@+id/categoriaEditText"
@@ -83,7 +83,7 @@
         android:textColorHint="@color/colorHint"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cognomsEditText">
+        app:layout_constraintTop_toBottomOf="@+id/nomEditText">
 
     </EditText>
 
