@@ -125,16 +125,16 @@
                     tools:layout_editor_absoluteY="84dp"
                     app:layout_constraintTop_toBottomOf="@id/textid"/>
 
-                <TextView
-                    android:id="@+id/textcognoms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginStart="48dp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="@+id/guideline"
-                    tools:layout_editor_absoluteY="124dp"
-                    app:layout_constraintTop_toBottomOf="@id/textnom"/>
+<!--                <TextView-->
+<!--                    android:id="@+id/textcognoms"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="20dp"-->
+<!--                    android:layout_marginStart="48dp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    app:layout_constraintStart_toStartOf="@+id/guideline"-->
+<!--                    tools:layout_editor_absoluteY="124dp"-->
+<!--                    app:layout_constraintTop_toBottomOf="@id/textnom"/>-->
 
                 <TextView
                     android:id="@+id/textcategoria"
@@ -145,7 +145,7 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="@+id/guideline"
                     tools:layout_editor_absoluteY="164dp"
-                    app:layout_constraintTop_toBottomOf="@id/textcognoms"/>
+                    app:layout_constraintTop_toBottomOf="@id/textnom"/>
 
 
                 <TextView

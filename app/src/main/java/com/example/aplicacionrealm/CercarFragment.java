@@ -8,20 +8,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.aplicacionrealm.Model.Empleat;
 
-import io.realm.OrderedRealmCollection;
-import io.realm.RealmRecyclerViewAdapter;
-import io.realm.RealmResults;
 
 
 /**
@@ -57,28 +52,25 @@ public class CercarFragment extends MyFragment {
             @Override
             public void onClick(View v) {
                 if (!validateForm()){
-                    Toast toast1 =
-                            Toast.makeText(requireActivity(),
-                                    "Faltan datos por introducir !", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER | Gravity.LEFT, 250, 0);
-                    toast1.show();
+                    Toast.makeText(requireActivity(),"Has d'introduir alguna dade !", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                // el -1 significa que no se desea buscar por ese campo
-                appViewModel.empleatABuscar.setValue(new Empleat(
+
+                appViewModel.empleatAModifcarOBuscar.setValue(new Empleat(
                         id.getText().toString().isEmpty() ? -1 : Integer.parseInt(id.getText().toString()),
                         categoria.getText().toString(),
-
                         edad.getText().toString().isEmpty() ? -1 : Integer.parseInt(edad.getText().toString()),
                         antiguetat.getText().toString().isEmpty() ? -1 : Integer.parseInt(antiguetat.getText().toString()),
                         nom.getText().toString()));
 
-                navController.navigate(R.id.listBusquedaFragment);
+                navController.navigate(R.id.empleat_List_Fragment);
             }
         });
     }
+
     private boolean validateForm() {
         boolean valid = true;
+        int contador = 0;
 
         String idt = id.getText().toString();
         if (!TextUtils.isEmpty(idt) ) {
@@ -88,7 +80,7 @@ public class CercarFragment extends MyFragment {
                 edad.setError("Solo números");
                 valid = false;
             }
-        }
+        }else contador ++;
 
         String edadt = edad.getText().toString();
         if (!TextUtils.isEmpty(edadt) ) {
@@ -98,7 +90,8 @@ public class CercarFragment extends MyFragment {
                 edad.setError("Solo números");
                 valid = false;
             }
-        }
+        }else contador ++;
+
         String antiguetatt = antiguetat.getText().toString();
         if (!TextUtils.isEmpty(antiguetatt)) {
             try{
@@ -107,7 +100,20 @@ public class CercarFragment extends MyFragment {
                 antiguetat.setError("Solo números");
                 valid = false;
             }
+        }else contador ++;
+
+        String nomIcognom = nom.getText().toString();
+        if (TextUtils.isEmpty(nomIcognom)) {
+            contador ++;
         }
+
+        String categ = categoria.getText().toString();
+        if (TextUtils.isEmpty(categ)) {
+            contador ++;
+        }
+
+        if (contador == 5) valid = false;
+
         return valid;
     }
 }

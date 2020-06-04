@@ -50,87 +50,79 @@ public class InsertarFragment extends MyFragment {
         titol = view.findViewById(R.id.titleText);
         idEditText = view.findViewById(R.id.idEditText);
         nomEditText = view.findViewById(R.id.nomEditText);
-       // cognomsEditText = view.findViewById(R.id.cognomsEditText);
+        // cognomsEditText = view.findViewById(R.id.cognomsEditText);
         categoriaEditText = view.findViewById(R.id.categoriaEditText);
         edadEditText = view.findViewById(R.id.edadEditText);
         antiguetatEditText = view.findViewById(R.id.antiguetatEditText);
         btnInsertar = view.findViewById(R.id.btnInsertar);
-        appViewModel.idSeleccion.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+        appViewModel.iniciarGestioEmpleats();
+
+        appViewModel.empleatAModifcarOBuscar.observe(getViewLifecycleOwner(), new Observer<Empleat>() {
             @Override
-            public void onChanged(Integer id) {
-                idSelecion = id;
-            }
-        });
-        appViewModel.modificar.observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean b) {
-                if (b) {
+            public void onChanged(Empleat empleat) {
+                if (empleat != null) {
+                    emplenarDadesEmpleat(empleat);
                     idEditText.setVisibility(EditText.INVISIBLE);
                     btnInsertar.setText("Modificar");
                     titol.setText("Modificar dades");
+                    modificar = true;
                 }
-                modificar = b;
+            }
+        });
+
+        appViewModel.estatGestioEmpleats.observe(getViewLifecycleOwner(), new Observer<AppViewModel.EstatGestioEmpleats>() {
+            @Override
+            public void onChanged(AppViewModel.EstatGestioEmpleats estatGestioEmpleats) {
+                switch (estatGestioEmpleats){
+                    case EMPLEAT_INSERTAT:
+                        navController.navigate(R.id.homeFragment);
+                        return;
+                    case EMPLEAT_MODIFICAT:
+                        Toast.makeText(requireActivity(),"Empleat modificat!", Toast.LENGTH_SHORT).show();
+                        navController.navigate(R.id.homeFragment);
+                        return;
+                    case EMPLEAT_JA_EXISTENT:
+                        Toast.makeText(requireActivity(),"El id introduit ja existeix!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnInsertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!validateForm(modificar)){
-                    Toast toast1 =
-                            Toast.makeText(requireActivity(),
-                                    "Faltan datos por introducir !", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER | Gravity.LEFT, 250, 0);
-                    toast1.show();
+                if (!validateForm()){
+                    Toast.makeText(requireActivity(),"Falten dades per introduir!", Toast.LENGTH_SHORT).show();
                     return;
-                }
-                if ( ! modificar && verificarExistencia(Integer.parseInt(idEditText.getText().toString()))){
-                    Toast toast1 =
-                            Toast.makeText(requireActivity(),
-                                    "El id introduit ja existeix !", Toast.LENGTH_SHORT);
-                    toast1.setGravity(Gravity.CENTER | Gravity.LEFT, 250, 0);
-                    toast1.show();
-                    return;
-                }else{
-                    writerDades(modificar, idSelecion);
-                    navController.navigate(R.id.homeFragment);
                 }
 
+                Empleat empleat = new Empleat(
+                        Integer.parseInt(idEditText.getText().toString()),
+//                        cognomsEditText.getText().toString(),
+                        categoriaEditText.getText().toString(),
+                        edadEditText.getText().toString().isEmpty() ? -1 : Integer.parseInt(edadEditText.getText().toString()),
+                        antiguetatEditText.getText().toString().isEmpty() ? -1 : Integer.parseInt(antiguetatEditText.getText().toString()),
+                        nomEditText.getText().toString());
+
+                if (modificar){
+                    appViewModel.modificarEmpleat(empleat);
+                } else {
+                    appViewModel.insertarEmpleat(empleat);
+                }
             }
         });
-
-    }
-    boolean verificarExistencia(int idSelecion){
-
-        RealmResults<Empleat> resultat = realm.where(Empleat.class)
-                .equalTo("id", idSelecion)
-                .findAll();
-
-        if (resultat.isEmpty()) return false;
-        else return true;
-
-    }
-    private void writerDades(boolean modificar, int idSelecion) {
-        int id;
-        if (modificar ) id = idSelecion;
-        else id = Integer.parseInt(idEditText.getText().toString());
-
-        empleat = new Empleat();
-        if (modificar ) empleat.setId(idSelecion);
-        else empleat.setId(Integer.parseInt(idEditText.getText().toString()));
-        empleat.setNomIcognoms(nomEditText.getText().toString());
-       // empleat.setCognoms(cognomsEditText.getText().toString());
-        empleat.setCategoria(categoriaEditText.getText().toString());
-        empleat.setEdad(Integer.parseInt(edadEditText.getText().toString()));
-        empleat.setAntiguetat(Integer.parseInt(antiguetatEditText.getText().toString()));
-
-        realm.beginTransaction();
-        ;
-        Empleat registrarEmpleat = realm.copyToRealmOrUpdate(empleat);
-        realm.commitTransaction();
     }
 
-    private boolean validateForm(boolean modificar) {
+    private void emplenarDadesEmpleat(Empleat empleat){
+        idEditText.setText(String.valueOf(empleat.getId()));
+       // cognomsEditText.setText(empleat.getCognoms());
+        categoriaEditText.setText(empleat.getCategoria());
+        nomEditText.setText(empleat.getNomIcognoms());
+        edadEditText.setText(String.valueOf(empleat.getEdad()));
+        antiguetatEditText.setText(String.valueOf(empleat.getEdad()));
+    }
+
+
+    private boolean validateForm() {
         boolean valid = true;
 
         String id = idEditText.getText().toString();
@@ -143,11 +135,11 @@ public class InsertarFragment extends MyFragment {
             nomEditText.setError("Required.");
             valid = false;
         }
-        String cognoms = cognomsEditText.getText().toString();
-        if (TextUtils.isEmpty(cognoms)) {
-            cognomsEditText.setError("Required.");
-            valid = false;
-        }
+//        String cognoms = cognomsEditText.getText().toString();
+//        if (TextUtils.isEmpty(cognoms)) {
+//            cognomsEditText.setError("Required.");
+//            valid = false;
+//        }
         String categoria = categoriaEditText.getText().toString();
         if (TextUtils.isEmpty(categoria)) {
             categoriaEditText.setError("Required.");

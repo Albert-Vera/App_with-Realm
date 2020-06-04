@@ -35,8 +35,6 @@ public class HomeFragment extends MyFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         insertar = view.findViewById(R.id.insertarText);
         cercar = view.findViewById(R.id.cercarText);
         visualitzar = view.findViewById(R.id.visualitzarText);
@@ -44,18 +42,22 @@ public class HomeFragment extends MyFragment {
         insertar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                appViewModel.empleatAModifcarOBuscar.setValue(null);
                 navController.navigate(R.id.insertarFragment);
             }
         });
+
         cercar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController.navigate(R.id.cercarFragment);
             }
         });
+
         visualitzar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                appViewModel.empleatAModifcarOBuscar.setValue(null);
                 navController.navigate(R.id.empleat_List_Fragment);
             }
         });

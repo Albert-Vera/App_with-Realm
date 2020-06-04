@@ -1,16 +1,19 @@
 package com.example.aplicacionrealm;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.aplicacionrealm.Model.Empleat;
@@ -46,19 +49,36 @@ public class Empleat_List_Fragment extends MyFragment {
 
         RecyclerView empleatsRecyclerView = view.findViewById(R.id.itemList);
 
-        RealmResults<Empleat> listEmpleat = realm.where(Empleat.class)
-                .sort("id")
-                .findAllAsync();
+        final EmpleatListAdapter empleatListAdapter = new EmpleatListAdapter(null, true);
+        empleatsRecyclerView.setAdapter(empleatListAdapter);
 
-        empleatsRecyclerView.setAdapter(new EmpleatAdapter(listEmpleat, true));
+        appViewModel.iniciarGestioEmpleats();
+
+        appViewModel.cercarEmpleats.observe(getViewLifecycleOwner(), new Observer<RealmResults<Empleat>>() {
+            @Override
+            public void onChanged(RealmResults<Empleat> empleats) {
+                if (empleats.isEmpty())
+                    Toast.makeText(requireActivity(),"No hi ha cap coincidència amb la cerca", Toast.LENGTH_SHORT).show();
+                empleatListAdapter.updateData(empleats);
+            }
+        });
+
+        appViewModel.estatGestioEmpleats.observe(getViewLifecycleOwner(), new Observer<AppViewModel.EstatGestioEmpleats>() {
+            @Override
+            public void onChanged(AppViewModel.EstatGestioEmpleats estatGestioEmpleats) {
+                if(estatGestioEmpleats == AppViewModel.EstatGestioEmpleats.EMPLEAT_ELIMINAT){
+                    Toast.makeText(requireActivity(),"Empleat eliminat!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
+    public class EmpleatListAdapter extends RealmRecyclerViewAdapter<Empleat, EmpleatListAdapter.MyViewHolder> {
 
-    public class EmpleatAdapter extends RealmRecyclerViewAdapter<Empleat, EmpleatAdapter.MyViewHolder> {
-
-        public EmpleatAdapter(@Nullable OrderedRealmCollection<Empleat> data, boolean autoUpdate) {
+        public EmpleatListAdapter(@Nullable OrderedRealmCollection<Empleat> data, boolean autoUpdate) {
             super(data, autoUpdate);
         }
+
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,6 +87,7 @@ public class Empleat_List_Fragment extends MyFragment {
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+            final Empleat empleat = getItem(position);
 
             holder.id.setText(String.valueOf(getData().get(position).getId()));
             holder.nom.setText(getData().get(position).getNomIcognoms());
@@ -79,28 +100,32 @@ public class Empleat_List_Fragment extends MyFragment {
                 @Override
                 public void onClick(View v) {
 
-                    eliminarDades(position);
-                    new AlertDialog.Builder(requireContext()).setTitle("\t\tEl·liminat")
-                            .setMessage("\t      ")
-                            .setMessage("\t      ")
+                    new AlertDialog.Builder(requireContext()).setTitle("Eliminar empleat?")
+                            .setMessage("S'eliminarà l'empleat amb id: " + empleat.getId())
                             .setCancelable(true)
+                            .setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    appViewModel.eliminarEmpleat(empleat);
+                                }
+                            })
+                            .setNegativeButton("Cancel·lar", null)
                             .create()
                             .show();
                 }
             });
-            appViewModel.modificar.setValue(false);
+
             holder.btnModificar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    appViewModel.idSeleccion.postValue(getData().get(position).getId());
-                    appViewModel.modificar.setValue(true);
+                    appViewModel.empleatAModifcarOBuscar.setValue(empleat);
                     navController.navigate(R.id.insertarFragment);
                 }
             });
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
-            TextView id, nom, cognoms, categoria, edad, antiguetat;
+            TextView id, nom, categoria, edad, antiguetat;
             Button btnEliminar, btnModificar;
 
             public MyViewHolder(@NonNull View view) {
@@ -114,12 +139,6 @@ public class Empleat_List_Fragment extends MyFragment {
                 btnEliminar = view.findViewById(R.id.eliminarButton);
                 btnModificar = view.findViewById(R.id.modificarButton);
             }
-        }
-        void eliminarDades(Integer pos){
-            RealmResults<Empleat> empleat = realm.where(Empleat.class).findAll();
-            realm.beginTransaction();
-            empleat.get(pos).deleteFromRealm();
-            realm.commitTransaction();
         }
     }
 }

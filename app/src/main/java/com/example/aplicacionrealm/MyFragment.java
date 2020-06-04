@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import com.example.aplicacionrealm.Model.AppViewModel;
 import com.example.aplicacionrealm.Model.Empleat;
 
 import java.util.concurrent.atomic.AtomicInteger;
